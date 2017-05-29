@@ -3,16 +3,32 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  static socket;
+  constructor(props) {
+    super(props);
+    this.state = {msg: ''};
+    this.handleChange = this.handleChange.bind(this);
+    this.sendMsg = this.sendMsg.bind(this);
+    this.socket = this.props.socket;
+  }
+  handleChange(event) {
+    this.setState({msg: event.target.value});
+  }
+  sendMsg() {
+    this.socket.emit('chat', this.state.msg);
+    this.setState({msg: ''});
+  }
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+      <div>
+        <ul id="messages"></ul>
+        <div id="form">
+          <input id="msg"
+            autoComplete="off"
+            value={this.state.msg}
+            onChange={this.handleChange}/>
+          <button onClick={this.sendMsg}>Send</button>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
       </div>
     );
   }
