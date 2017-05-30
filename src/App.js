@@ -1,46 +1,78 @@
 import React, { Component } from 'react';
-import Chat from './chat/chat.js';
+import Chat from './chat/Chat.js';
+import ChatRoomList from './chat/ChatRoomList.js';
 import './App.css';
 import * as http from './lib/http.js';
+import { getGpsCord } from './lib/gps.js';
+import { Tabs, Tab, Panel } from 'react-bootstrap';
+import CreateChatRoomForm from './chat/CreateChatRoomForm.js';
 
 const io = require('socket.io-client');
-
-var connectionOptions =  {
-    "force new connection" : true,
-    "reconnectionAttempts": "Infinity", //avoid having user reconnect manually in order to prevent dead clients after a server restart
-    "timeout" : 10000,                  //before connect_error and connect_timeout are emitted.
-    "transports" : ["websocket"]
+const SERVER_URL = 'http://localhost:8000';
+const connectionOptions = {
+    'force new connection': true,
+    'reconnectionAttempts': 'Infinity',
+    'timeout': 10000,
+    'transports': ['websocket'],
 };
 
-const socket = io('localhost:8000', connectionOptions)
+const socket = io('localhost:8000', connectionOptions);
 
 class App extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      tabKey: 2,
+    }
+    this.updateNearbyChatRoom = this.updateNearbyChatRoom.bind(this);
+    this.handleTabSelect = this.handleTabSelect.bind(this);
     // Get current position(lat, lng);
-      console.log('ctor')
-    navigator.geolocation.getCurrentPosition(function(location) {
-      console.log('get location')
-      http.get('http://localhost:8000', 'get-chat-rooms', {
-        lat: location.coords.latitude,
-        lng: location.coords.longitude,
-        range: 3000
+    this.updateNearbyChatRoom();
+  }
+
+  handleTabSelect(tabKey) {
+    this.setState({tabKey});
+  }
+
+  updateNearbyChatRoom() {
+    getGpsCord().then(function(location) {
+      http.get(SERVER_URL, 'get-chat-rooms', {
+        lat: location.lat,
+        lng: location.lng,
+        range: 5000,
       }).then(function(response) {
         return response.json();
       }).then(function(json) {
-        console.log('Request successful', json);
-        this.setState({chatRooms: json});
+        this._roomList.updateRooms(json);
       }.bind(this));
-    }.bind(this), function(err) {
-      console.log('err: ', err);
-    }, {
-      enableHighAccuracy: true,
-      timeout: 10000,
-    });
+    }.bind(this));
+      if (this.refs.tabs) {
+        this.handleTabSelect(2);
+      }
   }
+
   render() {
     return (
-      <Chat socket={socket}></Chat>
+      <div>
+        <Panel style={{position: 'absolute', width: '30%', height: '100%'}}>
+          <Tabs activeKey={this.state.tabKey} onSelect={this.handleTabSelect}
+            id='tab' className='roomTab' ref='tabs'
+            >
+            <Tab eventKey={1} title='Joined'>Tab 2 content</Tab>
+            <Tab eventKey={2} title='Nerby'>
+              <ChatRoomList ref={(list) => this._roomList = list}/>
+            </Tab>
+            <Tab eventKey={3} title='Create'>
+              <CreateChatRoomForm updateRooms={this.updateNearbyChatRoom}/>
+            </Tab>
+          </Tabs>
+        </Panel>
+        <Panel style={{position: 'absolute', left: '30%', width: '70%', height: '100%'}}>
+          <div>
+            <Chat socket={socket}/>
+          </div>
+        </Panel>
+      </div>
     );
   }
 }

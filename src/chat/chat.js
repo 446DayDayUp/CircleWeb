@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import './chat.css';
+import './Chat.css';
 
 class Chat extends Component {
-  static socket;
   constructor(props) {
     super(props);
     this.state = {msg: ''};

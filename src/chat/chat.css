@@ -6,3 +6,8 @@ body { font: 13px Helvetica, Arial; }
 #messages { list-style-type: none; margin: 0; padding: 0; }
 #messages li { padding: 5px 10px; }
 #messages li:nth-child(odd) { background: #eee; }
+
+.chatRoom {
+  border-width: 1px;
+  border-style: solid;
+}
