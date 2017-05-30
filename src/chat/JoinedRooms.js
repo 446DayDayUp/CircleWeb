@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import './Chat.css';
 import { Button, ListGroupItem, ListGroup } from 'react-bootstrap';
 
-class ChatRoomList extends Component {
+class JoinedRooms extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chatRooms: [],
+      joinedRooms: [],
     };
     this.renderRoom = this.renderRoom.bind(this);
   }
@@ -25,25 +25,28 @@ class ChatRoomList extends Component {
         <br/>
         <Button bsStyle="primary" bsSize="xsmall"
           onClick={() => this.props.joinChatRoom(room)}>
-          Join Chat Room
+          Quit
         </Button>
       </ListGroupItem>
     );
   }
 
-  updateRooms(rooms) {
+  addRoom(room) {
     this.setState({
-      chatRooms: rooms
+      joinedRooms: [
+        ...this.state.joinedRooms,
+        room
+      ]
     });
   }
 
   render() {
     return (
       <ListGroup>
-        {this.state.chatRooms.map(this.renderRoom)}
+        {this.state.joinedRooms.map(this.renderRoom)}
       </ListGroup>
     );
   }
 }
 
-export default ChatRoomList;
+export default JoinedRooms;

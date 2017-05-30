@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Chat from './chat/Chat.js';
 import ChatRoomList from './chat/ChatRoomList.js';
+import JoinedRooms from './chat/JoinedRooms.js';
 import './App.css';
 import * as http from './lib/http.js';
 import { getGpsCord } from './lib/gps.js';
@@ -26,12 +27,17 @@ class App extends Component {
     }
     this.updateNearbyChatRoom = this.updateNearbyChatRoom.bind(this);
     this.handleTabSelect = this.handleTabSelect.bind(this);
+    this.joinChatRoom = this.joinChatRoom.bind(this);
     // Get current position(lat, lng);
     this.updateNearbyChatRoom();
   }
 
   handleTabSelect(tabKey) {
     this.setState({tabKey});
+  }
+
+  joinChatRoom(room) {
+    this._joinedRoom.addRoom(room);
   }
 
   updateNearbyChatRoom() {
@@ -58,9 +64,12 @@ class App extends Component {
           <Tabs activeKey={this.state.tabKey} onSelect={this.handleTabSelect}
             id='tab' className='roomTab' ref='tabs'
             >
-            <Tab eventKey={1} title='Joined'>Tab 2 content</Tab>
+            <Tab eventKey={1} title='Joined'>
+              <JoinedRooms ref={(list) => this._joinedRoom = list}/>
+            </Tab>
             <Tab eventKey={2} title='Nerby'>
-              <ChatRoomList ref={(list) => this._roomList = list}/>
+              <ChatRoomList ref={(list) => this._roomList = list}
+                joinChatRoom={this.joinChatRoom}/>
             </Tab>
             <Tab eventKey={3} title='Create'>
               <CreateChatRoomForm updateRooms={this.updateNearbyChatRoom}/>
