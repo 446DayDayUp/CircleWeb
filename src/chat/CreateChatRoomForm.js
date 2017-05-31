@@ -4,7 +4,7 @@ import * as http from '../lib/http.js';
 import { getGpsCord } from '../lib/gps.js';
 import { FormGroup, Checkbox, Button, ControlLabel, FormControl } from 'react-bootstrap';
 
-const SERVER_URL = 'http://localhost:8000';
+const SERVER_URL = 'https://circle-chat.herokuapp.com';
 
 export default class CreateChatRoomForm extends Component {
   constructor(props) {

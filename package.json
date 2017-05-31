@@ -2,10 +2,12 @@
   "name": "CircleWeb",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://446daydayup.github.io/circle-web",
   "devDependencies": {
     "eslint": "^3.19.0",
     "eslint-config-google": "^0.7.1",
-    "eslint-plugin-react": "^7.0.1"
+    "eslint-plugin-react": "^7.0.1",
+    "gh-pages": "^1.0.0"
   },
   "dependencies": {
     "react-scripts": "1.0.7",
@@ -22,6 +24,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "./node_modules/.bin/eslint src/**/**.js src/**.js; exit 0"
+    "lint": "./node_modules/.bin/eslint src/**/**.js src/**.js; exit 0",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+
   }
 }

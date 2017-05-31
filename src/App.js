@@ -9,7 +9,7 @@ import { Tabs, Tab, Panel } from 'react-bootstrap';
 import CreateChatRoomForm from './chat/CreateChatRoomForm.js';
 
 const io = require('socket.io-client');
-const SERVER_URL = 'http://localhost:8000';
+const SERVER_URL = 'https://circle-chat.herokuapp.com';
 
 class App extends Component {
   constructor(props) {
