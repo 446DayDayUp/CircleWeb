@@ -10,20 +10,13 @@ import CreateChatRoomForm from './chat/CreateChatRoomForm.js';
 
 const io = require('socket.io-client');
 const SERVER_URL = 'http://localhost:8000';
-const connectionOptions = {
-    'force new connection': true,
-    'reconnectionAttempts': 'Infinity',
-    'timeout': 10000,
-    'transports': ['websocket'],
-};
-
-const socket = io('localhost:8000', connectionOptions);
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tabKey: 2,
+      joinedRooms: [],
     }
     this.updateNearbyChatRoom = this.updateNearbyChatRoom.bind(this);
     this.handleTabSelect = this.handleTabSelect.bind(this);
@@ -37,11 +30,26 @@ class App extends Component {
     this.setState({tabKey});
   }
 
+  // TODO: simplify logic.
   joinChatRoom(room) {
+    room.socket = io(SERVER_URL);
+    room.socket.emit('room', room._id);
+    this.setState({
+      joinedRooms: [
+        ...this.state.joinedRooms,
+        room,
+      ],
+    })
     this._joinedRoom.addRoom(room);
   }
 
   quitChatRoom(room) {
+    room.socket.disconnect();
+    this.setState({
+      joinedRooms: this.state.joinedRooms.filter((joined) => {
+        return joined._id !== room._id;
+      }),
+    });
     this._roomList.quitRoom(room);
   }
 
@@ -83,9 +91,15 @@ class App extends Component {
           </Tabs>
         </Panel>
         <Panel style={{position: 'absolute', left: '30%', width: '70%', height: '100%'}}>
-          <div>
-            <Chat socket={socket}/>
-          </div>
+          <Tabs activeKey={this.state.chatTabKey} onSelect={this.handleChatSelect} id='chatTab'>
+            {this.state.joinedRooms.map((room, index) => {
+              return (
+                <Tab eventKey={index} title={room.name} key={room._id}>
+                  <Chat socket={room.socket} id={room._id}/>
+                </Tab>
+                );
+            })}
+          </Tabs>
         </Panel>
       </div>
     );
