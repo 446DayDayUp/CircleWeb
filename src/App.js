@@ -28,6 +28,7 @@ class App extends Component {
     this.updateNearbyChatRoom = this.updateNearbyChatRoom.bind(this);
     this.handleTabSelect = this.handleTabSelect.bind(this);
     this.joinChatRoom = this.joinChatRoom.bind(this);
+    this.quitChatRoom = this.quitChatRoom.bind(this);
     // Get current position(lat, lng);
     this.updateNearbyChatRoom();
   }
@@ -38,6 +39,10 @@ class App extends Component {
 
   joinChatRoom(room) {
     this._joinedRoom.addRoom(room);
+  }
+
+  quitChatRoom(room) {
+    this._roomList.quitRoom(room);
   }
 
   updateNearbyChatRoom() {
@@ -65,7 +70,8 @@ class App extends Component {
             id='tab' className='roomTab' ref='tabs'
             >
             <Tab eventKey={1} title='Joined'>
-              <JoinedRooms ref={(list) => this._joinedRoom = list}/>
+              <JoinedRooms ref={(list) => this._joinedRoom = list}
+                quitChatRoom={this.quitChatRoom}/>
             </Tab>
             <Tab eventKey={2} title='Nerby'>
               <ChatRoomList ref={(list) => this._roomList = list}

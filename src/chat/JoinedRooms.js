@@ -9,10 +9,20 @@ class JoinedRooms extends Component {
       joinedRooms: [],
     };
     this.renderRoom = this.renderRoom.bind(this);
+    this.quitChatRoom = this.quitChatRoom.bind(this);
   }
 
   renderTag(tag) {
     return <i key={tag}>#{tag} </i>
+  }
+
+  quitChatRoom(room) {
+    this.setState({
+      joinedRooms: this.state.joinedRooms.filter((joined) => {
+        return joined._id !== room._id;
+      }),
+    });
+    this.props.quitChatRoom(room);
   }
 
   renderRoom(room) {
@@ -24,7 +34,7 @@ class JoinedRooms extends Component {
         {room.distance}m
         <br/>
         <Button bsStyle="primary" bsSize="xsmall"
-          onClick={() => this.props.joinChatRoom(room)}>
+          onClick={() => this.quitChatRoom(room)}>
           Quit
         </Button>
       </ListGroupItem>
