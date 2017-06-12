@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import Chat from './chat/Chat.js';
-import ChatRoomList from './chat/ChatRoomList.js';
-import JoinedRooms from './chat/JoinedRooms.js';
 import './App.css';
+import Chat from './component/Chat.js';
+import ChatRoomList from './component/ChatRoomList.js';
+import JoinedRooms from './component/JoinedRooms.js';
+import UserProfile from './component/UserProfile.js';
+import CreateChatRoomForm from './component/CreateChatRoomForm.js';
 import * as http from './lib/http.js';
 import { getGpsCord } from './lib/gps.js';
 import { Tabs, Tab, Panel } from 'react-bootstrap';
-import CreateChatRoomForm from './chat/CreateChatRoomForm.js';
 
 const io = require('socket.io-client');
 const SERVER_URL = 'http://localhost:8000';
@@ -15,19 +16,25 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabKey: 2,
+      tabKey: 3,
       joinedRooms: [],
+      userName: 'unknown'
     }
     this.updateNearbyChatRoom = this.updateNearbyChatRoom.bind(this);
     this.handleTabSelect = this.handleTabSelect.bind(this);
     this.joinChatRoom = this.joinChatRoom.bind(this);
     this.quitChatRoom = this.quitChatRoom.bind(this);
+    this.updateProfile = this.updateProfile.bind(this);
     // Get current position(lat, lng);
     this.updateNearbyChatRoom();
   }
 
   handleTabSelect(tabKey) {
     this.setState({tabKey});
+  }
+
+  updateProfile(userData) {
+    this.setState(userData);
   }
 
   // TODO: simplify logic.
@@ -77,15 +84,18 @@ class App extends Component {
           <Tabs activeKey={this.state.tabKey} onSelect={this.handleTabSelect}
             id='tab' className='roomTab' ref='tabs'
             >
-            <Tab eventKey={1} title='Joined'>
+            <Tab eventKey={1} title='Profile'>
+              <UserProfile updateProfile={this.updateProfile}/>
+            </Tab>
+            <Tab eventKey={2} title='Joined'>
               <JoinedRooms ref={(list) => this._joinedRoom = list}
                 quitChatRoom={this.quitChatRoom}/>
             </Tab>
-            <Tab eventKey={2} title='Nerby'>
+            <Tab eventKey={3} title='Nerby'>
               <ChatRoomList ref={(list) => this._roomList = list}
                 joinChatRoom={this.joinChatRoom}/>
             </Tab>
-            <Tab eventKey={3} title='Create'>
+            <Tab eventKey={4} title='Create'>
               <CreateChatRoomForm updateRooms={this.updateNearbyChatRoom}/>
             </Tab>
           </Tabs>
@@ -95,7 +105,7 @@ class App extends Component {
             {this.state.joinedRooms.map((room, index) => {
               return (
                 <Tab eventKey={index} title={room.name} key={room._id}>
-                  <Chat socket={room.socket} id={room._id}/>
+                  <Chat socket={room.socket} id={room._id} userData={this.state.userData}/>
                 </Tab>
                 );
             })}

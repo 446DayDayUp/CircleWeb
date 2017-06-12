@@ -11,11 +11,14 @@ class Chat extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.sendMsg = this.sendMsg.bind(this);
     this.socket = this.props.socket;
-    this.socket.on('chat', function(sid, msg){
-      console.log('receved msg: ', msg)
+    this.socket.on('chat', function(sid, userName, iconName, msg){
       this.setState({
-        chatMsgs: [...this.state.chatMsgs, msg],
-      });
+        chatMsgs: [...this.state.chatMsgs, {
+          sid,
+          userName,
+          iconName,
+          text: msg,
+        }]});
     }.bind(this));
   }
   handleChange(event) {
@@ -23,14 +26,14 @@ class Chat extends Component {
   }
   sendMsg() {
     console.log(this.props.id, this.state.msg)
-    this.socket.emit('chat', this.props.id, this.state.msg);
+    this.socket.emit('chat', this.props.id, this.props.userData.userName, 'pikachu-2', this.state.msg);
     this.setState({msg: ''});
   }
   render() {
     return (
       <div>
         <ul id="messages">
-          {this.state.chatMsgs.map((msg, i) => <li key={i}>{msg}</li>)}
+          {this.state.chatMsgs.map((msg, i) => <li key={i}>msg.userName: {msg.msg}</li>)}
         </ul>
         <div id="form">
           <input id="msg"
