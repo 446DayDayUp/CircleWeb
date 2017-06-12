@@ -2,6 +2,7 @@
   "name": "CircleWeb",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://https://446daydayup.github.io/.github.io/circle-web",
   "devDependencies": {
     "eslint": "^3.19.0",
     "eslint-config-google": "^0.7.1",

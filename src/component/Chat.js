@@ -33,7 +33,7 @@ class Chat extends Component {
     return (
       <div>
         <ul id="messages">
-          {this.state.chatMsgs.map((msg, i) => <li key={i}>msg.userName: {msg.msg}</li>)}
+          {this.state.chatMsgs.map((msg, i) => <li key={i}>{msg.userName}: {msg.msg}</li>)}
         </ul>
         <div id="form">
           <input id="msg"
