@@ -26,7 +26,7 @@ class Chat extends Component {
   }
   sendMsg() {
     console.log(this.props.id, this.state.msg)
-    this.socket.emit('chat', this.props.id, this.props.userData.userName, 'pikachu-2', this.state.msg);
+    this.socket.emit('chat', this.props.id, this.props.userName, 'pikachu-2', this.state.msg);
     this.setState({msg: ''});
   }
   render() {
