@@ -11,3 +11,8 @@ body { font: 13px Helvetica, Arial; }
   border-width: 1px;
   border-style: solid;
 }
+
+.portrait {
+  width: 20px;
+  height: 20px;
+}
