@@ -30,14 +30,13 @@ class Chat extends Component {
     this.setState({msg: ''});
   }
   render() {
-    const portrait = this.props.iconName || 'pikachu-2';
-
     return (
       <div>
         <ul id="messages">
           {this.state.chatMsgs.map((msg, i) =>
             <li key={i}>
-              <img className='portrait' alt='portrait' src={require(`../assets/${portrait}.png`)}/>
+              <img className='portrait' alt='portrait' src={require(`../assets/${msg.userName ===
+                this.props.userName ? this.props.iconName : msg.iconName}.png`)}/>
               <span>{msg.userName}: {msg.text}</span>
             </li>)}
         </ul>

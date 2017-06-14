@@ -20,7 +20,8 @@ class App extends Component {
     this.state = {
       tabKey: 3,
       joinedRooms: [],
-      userName: 'unknown'
+      userName: 'unknown',
+      iconName: 'pikachu-2',
     }
     this.updateNearbyChatRoom = this.updateNearbyChatRoom.bind(this);
     this.handleTabSelect = this.handleTabSelect.bind(this);
