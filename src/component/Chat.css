@@ -16,3 +16,26 @@ body { font: 13px Helvetica, Arial; }
   width: 20px;
   height: 20px;
 }
+
+/* UserProfile */
+.profileImages ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.profileImages li {
+  padding: 5px;
+}
+
+.profileImages img {
+  width: 50px;
+  height: 50px;
+}
+
+.selected {
+  border-color: #2196F3;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 10px;
+}

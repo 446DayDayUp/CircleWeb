@@ -107,7 +107,7 @@ class App extends Component {
             {this.state.joinedRooms.map((room, index) => {
               return (
                 <Tab eventKey={index} title={room.name} key={room._id}>
-                  <Chat socket={room.socket} id={room._id} userName={this.state.userName}/>
+                  <Chat socket={room.socket} id={room._id} userName={this.state.userName} iconName={this.state.iconName}/>
                 </Tab>
                 );
             })}
