@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
 import './Chat.css';
 import { FormGroup, Checkbox, Button, ControlLabel, FormControl } from 'react-bootstrap';
 import profilePictures from '../lib/profilePictures.js';
