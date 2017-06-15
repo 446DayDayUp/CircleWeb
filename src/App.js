@@ -20,7 +20,8 @@ class App extends Component {
     this.state = {
       tabKey: 3,
       joinedRooms: [],
-      userName: 'unknown'
+      userName: 'unknown',
+      iconName: 'pikachu-2',
     }
     this.updateNearbyChatRoom = this.updateNearbyChatRoom.bind(this);
     this.handleTabSelect = this.handleTabSelect.bind(this);
@@ -107,7 +108,7 @@ class App extends Component {
             {this.state.joinedRooms.map((room, index) => {
               return (
                 <Tab eventKey={index} title={room.name} key={room._id}>
-                  <Chat socket={room.socket} id={room._id} userName={this.state.userName}/>
+                  <Chat socket={room.socket} id={room._id} userName={this.state.userName} iconName={this.state.iconName}/>
                 </Tab>
                 );
             })}

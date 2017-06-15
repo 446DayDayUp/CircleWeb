@@ -26,14 +26,19 @@ class Chat extends Component {
   }
   sendMsg() {
     console.log(this.props.id, this.state.msg)
-    this.socket.emit('chat', this.props.id, this.props.userName, 'pikachu-2', this.state.msg);
+    this.socket.emit('chat', this.props.id, this.props.userName, this.props.iconName, this.state.msg);
     this.setState({msg: ''});
   }
   render() {
     return (
       <div>
         <ul id="messages">
-          {this.state.chatMsgs.map((msg, i) => <li key={i}>{msg.userName}: {msg.text}</li>)}
+          {this.state.chatMsgs.map((msg, i) =>
+            <li key={i}>
+              <img className='portrait' alt='portrait' src={require(`../assets/${msg.userName ===
+                this.props.userName ? this.props.iconName : msg.iconName}.png`)}/>
+              <span>{msg.userName}: {msg.text}</span>
+            </li>)}
         </ul>
         <div id="form">
           <input id="msg"
