@@ -10,7 +10,7 @@ import { getGpsCord } from './lib/gps.js';
 import { Tabs, Tab, Panel } from 'react-bootstrap';
 
 const io = require('socket.io-client');
-// const SERVER_URL = 'http://localhost:8000';
+//const SERVER_URL = 'http://localhost:8000';
 const SERVER_URL = 'https://circle-chat.herokuapp.com';  // For deployment
 
 

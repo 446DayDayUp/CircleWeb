@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Chat.css';
+import ChatPanel from './ChatPanel.js';
 
 class Chat extends Component {
   constructor(props) {
@@ -8,10 +9,8 @@ class Chat extends Component {
       msg: '',
       chatMsgs: []
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.sendMsg = this.sendMsg.bind(this);
     this.socket = this.props.socket;
-    this.socket.on('chat', function(sid, userName, iconName, msg){
+    this.socket.on('chat', (sid, userName, iconName, msg) => {
       this.setState({
         chatMsgs: [...this.state.chatMsgs, {
           sid,
@@ -19,27 +18,23 @@ class Chat extends Component {
           iconName,
           text: msg,
         }]});
-    }.bind(this));
+    });
   }
-  handleChange(event) {
+
+  handleChange = event => {
     this.setState({msg: event.target.value});
   }
-  sendMsg() {
+
+  sendMsg = () => {
     console.log(this.props.id, this.state.msg)
     this.socket.emit('chat', this.props.id, this.props.userName, this.props.iconName, this.state.msg);
     this.setState({msg: ''});
   }
+
   render() {
     return (
       <div>
-        <ul id="messages">
-          {this.state.chatMsgs.map((msg, i) =>
-            <li key={i}>
-              <img className='portrait' alt='portrait' src={require(`../assets/${msg.userName ===
-                this.props.userName ? this.props.iconName : msg.iconName}.png`)}/>
-              <span>{msg.userName}: {msg.text}</span>
-            </li>)}
-        </ul>
+        <ChatPanel id={this.props.id} socket={this.props.socket} iconName={this.props.iconName} userName={this.props.userName} chatMsgs={this.state.chatMsgs}/>
         <div id="form">
           <input id="msg"
             autoComplete="off"
